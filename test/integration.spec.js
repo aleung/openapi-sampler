@@ -405,6 +405,39 @@ describe('Integration', function() {
       expected = 'test1';
       expect(result).to.equal(expected);
     });
+
+    it('should use explicit example', function() {  // TODO: array
+      var obj = {
+        withExample: 'Example',
+      };
+      schema = {
+        type: 'object',
+        properties: {
+          withoutExampleString: {
+            type: 'string'
+          },
+          withoutExampleNumber: {
+            type: 'number'
+          },
+          withoutExampleBoolean: {
+            type: 'boolean'
+          },
+          withoutExampleObject: {
+            type: 'object',
+          },
+          withExample: {
+            type: 'string',
+            example: 'Example'
+          }
+        },
+        additionalProperties: {
+          type: 'number'
+        }
+      };
+      result = OpenAPISampler.sample(schema, { disableAutoGeneration: true });
+      expected = obj;
+      expect(result).to.deep.equal(obj);
+    });
   });
 
   describe('Detection', function() {

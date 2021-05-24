@@ -1,4 +1,8 @@
-export function sampleNumber(schema) {
+export function sampleNumber(schema, options={}) {
+  if (options.disableAutoGeneration) {
+    return null;
+  }
+
   let res;
   if (schema.maximum && schema.minimum) {
     res = schema.exclusiveMinimum ? Math.floor(schema.minimum) + 1 : schema.minimum;

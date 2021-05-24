@@ -102,5 +102,41 @@ describe('sampleObject', () => {
       fooId: 'fb4274c7-4fcd-4035-8958-a680548957ff',
       barId: '3c966637-4898-4972-9a9d-baefa6cd6c89'
     });
-  })
+  });
+
+  it('should skip properties without explicit example value if disableAutoGeneration=true', () => {
+    res = sampleObject({
+      properties: {
+        a: {type: 'string', enum: ['foo', 'bar']},
+        b: {type: 'integer', default: 100},
+        c: {type: 'string'}
+      },
+    }, {disableAutoGeneration: true});
+    expect(res).to.deep.equal({
+      a: 'foo',
+      b: 100
+    });
+  });
+
+  it('should skip additional properties if disableAutoGeneration=true', () => {
+    res = sampleObject({
+      properties: {
+        a: {type: 'string', example: 'Example'},
+        additionalProperties: {type: 'string'}
+      },
+    }, {disableAutoGeneration: true});
+    expect(res).to.deep.equal({
+      a: 'Example'
+    });
+  });
+
+  it('should return null if disableAutoGeneration=true and no property has example', () => {
+    res = sampleObject({
+      properties: {
+        a: {type: 'string'},
+        b: {type: 'integer'}
+      },
+    }, {disableAutoGeneration: true});
+    expect(res).to.be.null;
+  });
 });

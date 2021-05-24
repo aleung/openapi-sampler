@@ -24,13 +24,21 @@ export function sampleObject(schema, options = {}, spec, context) {
       if (options.skipWriteOnly && sample.writeOnly) {
         return;
       }
-      res[propertyName] = sample.value;
+
+      if (sample.value || !options.disableAutoGeneration){
+        res[propertyName] = sample.value;
+      }
     });
   }
 
-  if (schema && typeof schema.additionalProperties === 'object') {
+  if (!options.disableAutoGeneration && schema && typeof schema.additionalProperties === 'object') {
     res.property1 = traverse(schema.additionalProperties, options, spec, {depth: depth + 1 }).value;
     res.property2 = traverse(schema.additionalProperties, options, spec, {depth: depth + 1 }).value;
   }
-  return res;
+
+  if (Object.keys(res).length > 0 || !options.disableAutoGeneration) {
+    return res;
+  }
+
+  return null;
 }

@@ -105,4 +105,9 @@ describe('sampleString', () => {
     expect(res).to.match(UUID_REGEXP);
     expect(res).to.equal('fb4274c7-4fcd-4035-8958-a680548957ff');
   });
+
+  it('should return null if disableAutoGeneration is true', () => {
+    res = sampleString({}, { disableAutoGeneration: true });
+    expect(res).to.be.null;
+  });
 });

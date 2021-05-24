@@ -53,4 +53,9 @@ describe('sampleNumber', () => {
     res = sampleNumber({minimum: 2, maximum: 3, exclusiveMinimum: true});
     expect(res).to.equal(3);
   });
+
+  it('should return null if disableAutoGeneration is true', () => {
+    res = sampleNumber({}, { disableAutoGeneration: true });
+    expect(res).to.be.null;
+  });
 });
