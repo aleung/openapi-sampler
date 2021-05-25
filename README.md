@@ -1,6 +1,7 @@
-# openapi-sampler
+# @aleung/openapi-sampler
 
-[![Travis build status](http://img.shields.io/travis/Redocly/openapi-sampler.svg?style=flat)](https://travis-ci.org/Redocly/openapi-sampler) [![Coverage Status](https://coveralls.io/repos/Redocly/openapi-sampler/badge.svg?branch=master&service=github)](https://coveralls.io/github/Redocly/openapi-sampler?branch=master) [![Dependency Status](https://david-dm.org/Redocly/openapi-sampler.svg)](https://david-dm.org/Redocly/openapi-sampler) [![devDependency Status](https://david-dm.org/Redocly/openapi-sampler/dev-status.svg)](https://david-dm.org/Redocly/openapi-sampler#info=devDependencies)
+> **Note**: This is a maintainence fork of openapi-sampler, including some PR which are not merged in upstream.
+> Publish at https://www.npmjs.com/package/@aleung/openapi-sampler
 
 Tool for generation samples based on OpenAPI payload/response schema
 
