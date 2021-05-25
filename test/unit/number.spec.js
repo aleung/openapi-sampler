@@ -54,8 +54,8 @@ describe('sampleNumber', () => {
     expect(res).to.equal(3);
   });
 
-  it('should return null if disableAutoGeneration is true', () => {
-    res = sampleNumber({}, { disableAutoGeneration: true });
+  it('should return null if it is omissible', () => {
+    res = sampleNumber({}, { omissible: true });
     expect(res).to.be.null;
   });
 });

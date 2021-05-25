@@ -1,11 +1,10 @@
 export function sampleNumber(schema, options={}) {
-  if (options.disableAutoGeneration) {
+  if (options.omissible) {
     return null;
   }
 
-  let res;
   if (schema.maximum && schema.minimum) {
-    res = schema.exclusiveMinimum ? Math.floor(schema.minimum) + 1 : schema.minimum;
+    let res = schema.exclusiveMinimum ? Math.floor(schema.minimum) + 1 : schema.minimum;
     if ((schema.exclusiveMaximum && res >= schema.maximum) ||
       ((!schema.exclusiveMaximum && res > schema.maximum))) {
       res = (schema.maximum + schema.minimum) / 2;

@@ -4,19 +4,28 @@ export function sampleObject(schema, options = {}, spec, context) {
   const depth = (context && context.depth || 1);
 
   if (schema && typeof schema.properties === 'object') {
-    let requiredKeys = (Array.isArray(schema.required) ? schema.required : []);
-    let requiredKeyDict = requiredKeys.reduce((dict, key) => {
+    const requiredKeys = (Array.isArray(schema.required) ? schema.required : []);
+    const requiredKeyDict = requiredKeys.reduce((dict, key) => {
       dict[key] = true;
       return dict;
     }, {});
 
     Object.keys(schema.properties).forEach(propertyName => {
+      const isRequired = requiredKeyDict.hasOwnProperty(propertyName);
       // skip before traverse that could be costly
-      if (options.skipNonRequired && !requiredKeyDict.hasOwnProperty(propertyName)) {
+      if (options.skipNonRequired && !isRequired) {
         return;
       }
 
-      const sample = traverse(schema.properties[propertyName], options, spec, { propertyName, depth: depth + 1 });
+      const propertyOmissible = options.disableNonRequiredAutoGen && !isRequired;
+
+      const sample = traverse(
+        schema.properties[propertyName],
+        Object.assign({}, options, { omissible: propertyOmissible }),
+        spec,
+        { propertyName, depth: depth + 1 }
+      );
+
       if (options.skipReadOnly && sample.readOnly) {
         return;
       }
@@ -25,18 +34,18 @@ export function sampleObject(schema, options = {}, spec, context) {
         return;
       }
 
-      if (sample.value || !options.disableAutoGeneration){
+      if (sample.value || !propertyOmissible) {
         res[propertyName] = sample.value;
       }
     });
   }
 
-  if (!options.disableAutoGeneration && schema && typeof schema.additionalProperties === 'object') {
+  if (!options.disableNonRequiredAutoGen && schema && typeof schema.additionalProperties === 'object') {
     res.property1 = traverse(schema.additionalProperties, options, spec, {depth: depth + 1 }).value;
     res.property2 = traverse(schema.additionalProperties, options, spec, {depth: depth + 1 }).value;
   }
 
-  if (Object.keys(res).length > 0 || !options.disableAutoGeneration) {
+  if (Object.keys(res).length > 0 || !options.omissible) {
     return res;
   }
 
